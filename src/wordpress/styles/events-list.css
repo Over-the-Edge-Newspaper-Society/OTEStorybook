@@ -1,0 +1,380 @@
+/**
+ * Events List Component
+ * Dark mode support for UNBC events list
+ */
+
+/* Events List Container */
+.unbc-events-list {
+  transition: all 0.3s ease;
+}
+
+/* Override inline styles for dark mode */
+[data-theme="dark"] .unbc-events-list {
+  /* Date headers */
+  & h3 {
+    color: var(--text) !important;
+  }
+  
+  /* Date separator line */
+  & div[style*="background-color: #e5e7eb"] {
+    background-color: var(--border) !important;
+  }
+  
+  /* Event count badge */
+  & span[style*="color: #6b7280"] {
+    color: var(--text-secondary) !important;
+    background-color: var(--surface-secondary) !important;
+  }
+  
+  /* Event cards */
+  & div[style*="background-color: rgb(249, 250, 251)"] {
+    background-color: var(--surface-secondary) !important;
+    border-color: var(--border) !important;
+  }
+  
+  /* Event card hover state */
+  & div[onmouseover] {
+    &:hover {
+      background-color: var(--surface-tertiary) !important;
+    }
+  }
+  
+  /* Event category indicator (left border) */
+  & div[style*="background-color: #6b7280"] {
+    background-color: var(--accent) !important;
+  }
+  
+  /* Event title */
+  & div[style*="color: #111827"] {
+    color: var(--text) !important;
+  }
+  
+  /* Event time and location text */
+  & div[style*="color: #6b7280"] {
+    color: var(--text-secondary) !important;
+    
+    /* Time and location icons */
+    svg {
+      color: var(--text-secondary) !important;
+    }
+  }
+  
+  /* Event cost (Free label) */
+  & div[style*="color: #10b981"] {
+    color: var(--success) !important;
+  }
+}
+
+/* Event Modal - Match main calendar modal styling */
+.unbc-event-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 1rem;
+  
+  &.show {
+    display: flex;
+  }
+}
+
+.unbc-event-modal-content {
+  position: relative;
+  background: white;
+  border-radius: 0.5rem;
+  max-width: 42rem; /* max-w-2xl */
+  width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.5rem;
+  border: 1px solid rgb(229, 231, 235);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  @media (min-width: 640px) {
+    width: 100%;
+    padding: 1.5rem;
+  }
+}
+
+/* Modal close button - match main calendar */
+.unbc-modal-close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.25rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.25rem;
+  color: rgb(107, 114, 128);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    opacity: 1;
+    background-color: rgb(243, 244, 246);
+    color: rgb(17, 24, 39);
+  }
+}
+
+/* Modal title */
+.unbc-modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgb(17, 24, 39);
+  margin-bottom: 0.5rem;
+  line-height: 1.75rem;
+  letter-spacing: -0.025em;
+}
+
+/* Modal description */
+.unbc-modal-description {
+  color: rgb(75, 85, 99);
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  margin-top: 0.5rem;
+  word-break: break-word;
+}
+
+/* Modal details section */
+.unbc-modal-details {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.unbc-modal-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.unbc-modal-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: rgb(107, 114, 128);
+  flex-shrink: 0;
+  
+  @media (min-width: 640px) {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.unbc-modal-detail-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.unbc-modal-detail-title {
+  font-weight: 500;
+  color: rgb(17, 24, 39);
+}
+
+.unbc-modal-detail-subtitle {
+  color: rgb(75, 85, 99);
+}
+
+/* Modal badge */
+.unbc-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: rgb(243, 244, 246);
+  color: rgb(55, 65, 81);
+  transition: all 0.15s;
+}
+
+/* Modal footer */
+.unbc-modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  
+  @media (min-width: 640px) {
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+}
+
+/* Modal buttons */
+.unbc-modal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  height: 2.5rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.15s;
+  cursor: pointer;
+  flex: 1;
+  min-width: 100px;
+  
+  @media (min-width: 640px) {
+    font-size: 0.875rem;
+  }
+}
+
+.unbc-modal-button-secondary {
+  border: 1px solid rgb(209, 213, 219);
+  background: white;
+  color: rgb(55, 65, 81);
+  
+  &:hover {
+    background-color: rgb(249, 250, 251);
+    color: rgb(17, 24, 39);
+  }
+}
+
+/* Dark mode styles for modal */
+[data-theme="dark"] {
+  .unbc-event-modal {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
+  .unbc-event-modal-content {
+    background: rgb(31, 41, 55); /* dark:bg-gray-800 */
+    border-color: rgb(55, 65, 81); /* dark:border-gray-700 */
+  }
+  
+  .unbc-modal-close {
+    color: rgb(209, 213, 219);
+    
+    &:hover {
+      background-color: rgb(55, 65, 81);
+      color: rgb(243, 244, 246);
+    }
+  }
+  
+  .unbc-modal-title {
+    color: rgb(243, 244, 246); /* dark:text-gray-100 */
+  }
+  
+  .unbc-modal-description {
+    color: rgb(156, 163, 175); /* dark:text-gray-400 */
+  }
+  
+  .unbc-modal-icon {
+    color: rgb(156, 163, 175); /* dark:text-gray-400 */
+  }
+  
+  .unbc-modal-detail-title {
+    color: rgb(243, 244, 246); /* dark:text-gray-100 */
+  }
+  
+  .unbc-modal-detail-subtitle {
+    color: rgb(156, 163, 175); /* dark:text-gray-400 */
+  }
+  
+  .unbc-modal-badge {
+    background-color: rgb(55, 65, 81);
+    color: rgb(209, 213, 219);
+  }
+  
+  .unbc-modal-button-secondary {
+    border-color: rgb(75, 85, 99); /* dark:border-gray-600 */
+    background: rgb(55, 65, 81); /* dark:bg-gray-700 */
+    color: rgb(209, 213, 219); /* dark:text-gray-300 */
+    
+    &:hover {
+      background-color: rgb(75, 85, 99); /* dark:hover:bg-gray-600 */
+      color: rgb(243, 244, 246);
+    }
+  }
+  
+  /* Calendar section separator */
+  div[style*="border-top: 1px solid #e5e7eb"] {
+    border-color: rgb(55, 65, 81) !important;
+  }
+  
+  /* Calendar section text */
+  div[style*="color: #6b7280"] {
+    color: rgb(156, 163, 175) !important;
+  }
+}
+
+/* Ensure proper contrast in dark mode */
+[data-theme="dark"] .unbc-events-list {
+  /* Override any remaining gray colors */
+  [style*="#111827"] {
+    color: var(--text) !important;
+  }
+  
+  [style*="#6b7280"] {
+    color: var(--text-secondary) !important;
+  }
+  
+  [style*="#e5e7eb"] {
+    background-color: var(--border) !important;
+  }
+  
+  [style*="#f3f4f6"] {
+    background-color: var(--surface-secondary) !important;
+  }
+  
+  [style*="#f9fafb"] {
+    background-color: var(--surface-secondary) !important;
+  }
+}
+
+/* Category-specific colors in dark mode */
+[data-theme="dark"] .unbc-events-list {
+  /* Academic events */
+  div[onclick*="category\":\"academic"] {
+    & > div:first-child {
+      background-color: var(--info) !important;
+    }
+  }
+  
+  /* Social events */
+  div[onclick*="category\":\"social"] {
+    & > div:first-child {
+      background-color: var(--success) !important;
+    }
+  }
+  
+  /* Sports events */
+  div[onclick*="category\":\"sports"] {
+    & > div:first-child {
+      background-color: var(--warning) !important;
+    }
+  }
+}
+
+/* Responsive adjustments for dark mode */
+@media (max-width: 768px) {
+  [data-theme="dark"] .unbc-events-list {
+    /* Mobile-specific dark mode tweaks */
+    & div[style*="padding: 0.75rem"] {
+      background-color: var(--surface-secondary) !important;
+    }
+  }
+}
+
+/* Animation for theme transitions */
+.unbc-events-list * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

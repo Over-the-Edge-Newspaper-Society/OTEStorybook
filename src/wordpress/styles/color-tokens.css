@@ -1,0 +1,5 @@
+/*
+ * Maintains backward compatibility for existing enqueue handles.
+ * The design tokens now live in index.css to match the TailPress workflow.
+ */
+@import url("./index.css");
