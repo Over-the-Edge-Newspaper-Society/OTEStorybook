@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards';
+import { StaggerTestimonials } from '@/components/ui/stagger-testimonials';
 
 const meta: Meta<typeof InfiniteMovingCards> = {
   title: 'UNBC/Confessions',
@@ -53,6 +54,18 @@ const confessions = [
     title: "",
   },
 ];
+
+const confessionTestimonials = confessions.map((confession) => ({
+  text: confession.quote,
+  name: confession.name,
+  role: confession.title || "UNBC Confession",
+}));
+
+const confessionDeck = confessions.map((confession, index) => ({
+  tempId: index,
+  testimonial: confession.quote,
+  by: confession.title ? `${confession.name} — ${confession.title}` : confession.name,
+}));
 
 export const Default: Story = {
   render: (args) => (
@@ -156,5 +169,39 @@ export const TripleStack: Story = {
     speed: "slow",
     pauseOnHover: true,
     rowCount: 3,
+  },
+};
+
+export const TestimonialsVariant: Story = {
+  render: (args) => <InfiniteMovingCards {...args} />,
+  args: {
+    items: confessionTestimonials,
+    variant: "testimonials",
+    speed: "fast",
+    pauseOnHover: true,
+    rowCount: 3,
+  },
+};
+
+export const StaggeredCards: Story = {
+  render: () => (
+    <div className="flex w-full h-[40rem] items-center justify-center bg-background">
+      <StaggerTestimonials items={confessionDeck} />
+    </div>
+  ),
+};
+
+export const StaggeredCardsDocs: Story = {
+  render: () => (
+    <div className="flex w-full h-[40rem] items-center justify-center bg-background">
+      <StaggerTestimonials items={confessionDeck} variant="docs" />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'A variant that displays the confession number at the top using the Salted font, without the quote symbol.',
+      },
+    },
   },
 };

@@ -8,6 +8,12 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Salted';
+  src: url('/fonts/Salted-Regular.otf') format('opentype');
+  font-display: swap;
+}
+
 :root {
   --background: oklch(0.9582 0.0152 90.2357);
   --foreground: oklch(0.3760 0.0225 64.3434);
