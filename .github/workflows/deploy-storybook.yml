@@ -14,22 +14,37 @@ permissions:
 
 # List of jobs
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    # Job steps
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       # Manual Checkout
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       # Set up Node
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      # Add Storybook build and deploy to GitHub Pages as a step in the workflow
-      - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Build Storybook
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          install_command: npm ci
-          build_command: npm run build-storybook
           path: storybook-static
-          checkout: false
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
